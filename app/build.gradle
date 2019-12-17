@@ -1,9 +1,11 @@
 import com.xfhy.plugin.CustomPlugin
 import com.xfhy.plugin.MyAndroidPlugin
+import com.xfhy.plugin.HookAssetsPlugin
 
 apply plugin: 'com.android.application'
 apply plugin: CustomPlugin
 apply plugin: MyAndroidPlugin
+apply plugin: HookAssetsPlugin
 
 testExtension {
     compileSdkVersion '29'

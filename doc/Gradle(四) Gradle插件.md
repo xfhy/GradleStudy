@@ -55,4 +55,76 @@ import com.xfhy.plugin.CustomPlugin
 apply plugin: CustomPlugin
 ```
 
-然后就可以在命令行输入`gradlew showCustomPlugin`执行这个插件.然后就可以在命令行看到输出了.
+然后就可以在命令行输入`gradlew showCustomPlugin`执行这个插件.然后就可以在命令行看到输出了.就这样简单的几步,一个简单的插件就写完了,虽然只是简单地打印了`hello world.`.
+
+## 3. 插件 plus
+
+但是,我们肯定不会满足于只会输出hello world的插件,我们来做一个稍微有点用的插件.正如我们平常在android{} 闭包里面,我们写了很多次的
+
+```gradle
+compileSdkVersion Config.compileSdkVersion
+buildToolsVersion Config.buildToolsVersion
+....
+```
+
+那我们就来做这样一个插件,读取这些配置信息的数据.首先在包名`com.xfhy.plugin`下面创建`AndroidExtension.groovy`,它是一个bean对象,用来保存信息的.定义如下:
+
+```groovy
+package com.xfhy.plugin
+
+class AndroidExtension {
+    String compileSdkVersion = ''
+    String buildToolsVersion = ''
+    String applicationId = ''
+    String minSdkVersion = ''
+}
+```
+
+然后创建一个新的插件`MyAndroidPlugin.groovy`
+
+```groovy
+package com.xfhy.plugin
+
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
+class MyAndroidPlugin implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        def extension = project.extensions.create('testExtension', AndroidExtension)
+        project.task('AndroidPlugin') {
+            doLast {
+                println("minSdkVersion = ${extension.minSdkVersion}")
+                println("applicationId = ${extension.applicationId}")
+                println("compileSdkVersion = ${extension.compileSdkVersion}")
+                println("buildToolsVersion = ${extension.buildToolsVersion}")
+            }
+        }
+    }
+}
+
+```
+
+通过`project.extensions.create`来获取testExtension闭包中的内容,并通过反射将闭包中的内容转成一个AndroidExtension对象.然后我创建了一个task去读取它.
+
+然后我们在app下面的build.gradle中加入代码:
+
+```gradle
+testExtension {
+    minSdkVersion '22'
+    applicationId 'com.xfhy.gradledemo'
+    compileSdkVersion '29'
+    buildToolsVersion '29.0.2'
+}
+```
+
+输出如下:
+
+```
+minSdkVersion = 22
+applicationId = com.xfhy.gradledemo
+compileSdkVersion = 29
+buildToolsVersion = 29.0.2
+```
+
+不错,已经能搞一个能读取到闭包信息的插件了.
