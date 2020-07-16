@@ -1,0 +1,49 @@
+//声明一个task
+//task xfhyTask
+//xfhyTask {
+//    //执行在gradle生命周期的第二个阶段,即配置阶段
+//    println("hello~")
+//
+//    //给task附带一些执行动作(Action),执行在gradle生命周期的第三个阶段
+//    doFirst {
+//        println("start")
+//    }
+//    doLast {
+//        println("end")
+//    }
+//}
+//
+////创建一个xfhyNextTask,这个task依赖于xfhyTask
+////必须先执行完xfhyTask,才能去执行xfhyNextTask,由此它们之间组成了一个有向无环图:xfhyTask->xfhyNextTask
+//task xfhyNextTask(dependsOn: "xfhyTask") {
+//    doLast {
+//        println("end?")
+//    }
+//}
+
+
+//--------Task的定义及配置
+//Task 定义方式1: 直接通过task函数去创建(在"()"可以不指定group和description属性)
+task myTask1(group: "MyTask", description: "task1") {
+    println("this is mytask1")
+}
+
+//Task定义方式2 : 通过TaskContainer 去创建Task
+this.tasks.create(name: "myTask2") {
+    setGroup("MyTask")
+    setDescription("task2")
+    println("this is mytask2")
+}
+
+//----------Task 自定义属性
+task Gradle_First() {
+    ext.good = true
+}
+task Gradle_Last() {
+    doLast {
+        println("I am not ${Gradle_First.name}")
+        println("good ? ${Gradle_First.good}")
+    }
+}
+
+//--------defaultTasks关键字标识默认执行任务

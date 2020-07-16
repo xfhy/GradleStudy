@@ -7,6 +7,7 @@ apply plugin: CustomPlugin
 apply plugin: MyAndroidPlugin
 apply plugin: HookAssetsPlugin
 apply from: 'file.gradle'
+apply from: 'task.gradle'
 
 testExtension {
     compileSdkVersion rootProject.ext.compileSdkVersion
