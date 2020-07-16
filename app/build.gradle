@@ -6,10 +6,11 @@ apply plugin: 'com.android.application'
 apply plugin: CustomPlugin
 apply plugin: MyAndroidPlugin
 apply plugin: HookAssetsPlugin
+apply from: 'file.gradle'
 
 testExtension {
-    compileSdkVersion '29'
-    buildToolsVersion '29.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     applicationId 'com.xfhy.gradledemo'
     minSdkVersion '22'
 }

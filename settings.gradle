@@ -1,2 +1,2 @@
-include ':app', ':buildSrc'
+include ':app'
 rootProject.name='测试'

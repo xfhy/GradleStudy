@@ -1,0 +1,46 @@
+//文件相关操作
+
+
+//filePath()
+//locateFile("file.gradle")
+
+//一些常用目录
+def filePath() {
+    println("the root file path is ${getRootDir().absolutePath}")
+    println("the build file path is ${getBuildDir().absolutePath}")
+    println("the Project file path is ${getProjectDir().absolutePath}")
+}
+
+//定位文件位置
+def locateFile(String fileName) {
+    try {
+        def myFile = file(fileName)
+        println("文件路径: ${myFile.absolutePath}")
+    } catch (GradleException e) {
+        println(e.toString())
+    }
+}
+
+//文件拷贝  这是一个自带的api,这里是闭包
+//copy {
+//    from file("build/outputs/apk")
+//    into getRootProject().getBuildDir().path + "/apk/"
+//    exclude {
+//        // 排除不需要拷贝的文件
+//    }
+//    rename {
+//        // 对拷贝过来的文件进行重命名
+//    }
+//}
+
+//文件树遍历
+//使用fileTree将当前目录转换为文件树的形式,然后便可以获取到每一个树元素(节点)进行相应操作
+fileTree("build/outputs/apk") { FileTree fileTree ->
+    fileTree.visit { FileTreeElement fileTreeElement ->
+        println("the file is ${fileTreeElement.file.name}")
+        copy {
+            from fileTreeElement.file
+            into getRootProject().getBuildDir().path + "/apkTree/"
+        }
+    }
+}

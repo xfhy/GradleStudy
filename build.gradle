@@ -1,7 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+//这里扩展了ext这个属性
+ext {
+    compileSdkVersion = '29'
+    buildToolsVersion = '29.0.2'
+}
+
 buildscript {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         google()
         jcenter()
         
@@ -16,6 +23,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         google()
         jcenter()
         
