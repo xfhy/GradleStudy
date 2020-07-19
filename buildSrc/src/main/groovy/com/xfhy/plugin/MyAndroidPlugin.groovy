@@ -2,6 +2,7 @@ package com.xfhy.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.TaskAction
 
 
 class MyAndroidPlugin implements Plugin<Project> {
@@ -16,5 +17,6 @@ class MyAndroidPlugin implements Plugin<Project> {
                 println("buildToolsVersion = ${extension.buildToolsVersion}")
             }
         }
+        project.tasks.create("releaseInfoTask", ReleaseInfoTask.class)
     }
 }
