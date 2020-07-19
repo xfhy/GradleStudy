@@ -1,4 +1,5 @@
 repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
     google()
     jcenter()
 }
@@ -10,4 +11,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
     implementation "commons-io:commons-io:2.6"
+
+    // Android DSL
+    implementation 'com.android.tools.build:gradle:3.6.2'
 }

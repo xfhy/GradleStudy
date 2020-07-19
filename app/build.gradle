@@ -8,7 +8,7 @@ apply plugin: MyAndroidPlugin
 apply plugin: HookAssetsPlugin
 //apply from: 'file.gradle'
 //apply from: 'task.gradle'
-apply from: 'net.gradle'
+//apply from: 'net.gradle'
 
 testExtension {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -139,8 +139,8 @@ android {
         //这里可以通过variant.taskName 来获取相应的task,这里的taskName是task的名字
         //示范: 获取检查清单文件的task
         //def task = variant.checkManifest
-        def task = variant.getCheckManifestProvider()
-        println(task.name)
+        //def task = variant.getCheckManifestProvider()
+        //println(task.name)
 
     }
 
