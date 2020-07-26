@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+//apply from: 'life.gradle'
+
 //这里扩展了ext这个属性
 ext {
     compileSdkVersion = '29'

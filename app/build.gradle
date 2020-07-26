@@ -3,19 +3,19 @@ import com.xfhy.plugin.MyAndroidPlugin
 import com.xfhy.plugin.HookAssetsPlugin
 
 apply plugin: 'com.android.application'
-apply plugin: CustomPlugin
-apply plugin: MyAndroidPlugin
-apply plugin: HookAssetsPlugin
+//apply plugin: CustomPlugin
+//apply plugin: MyAndroidPlugin
+//apply plugin: HookAssetsPlugin
 //apply from: 'file.gradle'
 //apply from: 'task.gradle'
 //apply from: 'net.gradle'
 
-testExtension {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    applicationId 'com.xfhy.gradledemo'
-    minSdkVersion '22'
-}
+//testExtension {
+//    compileSdkVersion rootProject.ext.compileSdkVersion
+//    buildToolsVersion rootProject.ext.buildToolsVersion
+//    applicationId 'com.xfhy.gradledemo'
+//    minSdkVersion '22'
+//}
 
 android {
     compileSdkVersion Config.compileSdkVersion

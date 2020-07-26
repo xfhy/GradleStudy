@@ -1,0 +1,77 @@
+//----生命周期-----
+
+//-------1. Initialization 阶段---------------
+gradle.settingsEvaluated {
+    //settingsEvaluated 可以获取到配置完毕的Settings对象
+    println("settingsEvaluated-----")
+}
+
+gradle.projectsLoaded {
+    //projectsLoaded回调时已经根据setting script创建了各个模块
+    println("projectsLoaded-----")
+}
+
+gradle.allprojects {
+    beforeEvaluate {
+        //这时的project对象包含了项目的基本信息,但是尚未被build script配置.因此,类似android{....}这种在build.gradle的配置是取不到的
+        println("allprojects  ->  beforeEvaluate-----")
+    }
+}
+
+//-------2. Configuration 阶段---------------
+
+//Build script 执行前: beforeEvaluate
+//每个build script被执行前都会触发对应模块的beforeEvaluate和beforeProject,
+//我们可以通过gradle.beforeProject为project设置hook
+gradle.beforeProject { project ->
+    //在此之后,即将执行build script中的代码
+    //不要在 build script 中使用 project.beforeEvaluate 方法. 该 hook 点在执行到 build script 的内容是已经走过了, 所以不会生效
+    println("${project.name} beforeProject-----")
+}
+
+//每当一个build.gradle被执行完毕,都会产生afterEvaluate回调
+gradle.afterProject { project ->
+    println("${project.name} afterProject-----")
+}
+
+gradle.projectsEvaluated {
+    //projectsEvaluated是在所有的build script都执行完毕后回调
+    println("projectsEvaluated-------   所有 Project 配置结束")
+}
+
+//有向无环图 配置完毕
+gradle.taskGraph.whenReady {
+    println("taskGraph whenReady")
+}
+
+//-------------3. Execution ------------------
+
+//每个task执行的 前/后 hook点
+gradle.addListener(new TaskExecutionListener() {
+    @Override
+    void beforeExecute(Task task) {
+        println("beforeExecute-------")
+    }
+
+    @Override
+    void afterExecute(Task task, TaskState state) {
+        println("afterExecute-------")
+    }
+})
+
+//一个task是由1个或1个以上action组成的,action里面才是执行具体的代码,hook如下
+gradle.addListener(new TaskActionListener() {
+    @Override
+    void beforeActions(Task task) {
+
+    }
+
+    @Override
+    void afterActions(Task task) {
+
+    }
+})
+
+gradle.buildFinished {
+    println("buildFinished--------")
+}
