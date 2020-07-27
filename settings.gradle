@@ -1,3 +1,7 @@
+//init.gradle 对应Gradle对象
+//settings.gradle 对应的是Settings对象,API 文档: https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings
+//build.gradle 对应的是Project对象
+
 
 //之前写到root build.gradle中的内容(repositories,dependencies),可以写到这里.
 //用来声明settings.gradle脚本所依赖的插件

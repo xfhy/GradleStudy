@@ -165,6 +165,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation Config.depConfig.support.recyclerview_androidx
+
+    // implementation 依赖会出现在编译产物中.但是最终产物中的该依赖不会向外暴露接口,这种方式可以有效减少recompile时所需要编译的模块,提高编译速度.
+    // api 和上面一样,但是在编译期会传递依赖给外部
+    // compileOnly 仅编译期有效,不会出现在最终产物中
+    // runtimeOnly 仅运行期有效,会出现在编译产物中
+    // annotationProcessor 注解处理器依赖(包含 META-INF/services/javax.annotation.processing.Processor 的 jar 包)
 }
 
 //项目属性,可在运行时加入参数 eg:  gradle clean -Ppwd="123"
