@@ -9,6 +9,7 @@ ext {
 }
 
 allprojects {
+    //设置依赖查找仓库,repositories对应的是RepositoryHandler对象  https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.dsl.RepositoryHandler.html
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         google()
