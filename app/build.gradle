@@ -166,3 +166,9 @@ dependencies {
 
     implementation Config.depConfig.support.recyclerview_androidx
 }
+
+//项目属性,可在运行时加入参数 eg:  gradle clean -Ppwd="123"
+if (hasProperty("pwd")) {
+    //简单判断一下是否有这个参数,如果没有,直接通过property取会报错(Could not get unknown property 'pwd' for project ':app' of type org.gradle.api.Project.)
+    println("property test 卧槽------------ ${property("pwd")}")
+}

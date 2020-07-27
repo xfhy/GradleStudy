@@ -14,4 +14,4 @@ pluginManagement {
 
 //设置参与构建的模块
 include ':app'
-rootProject.name = '测试'
+rootProject.name='Gradle学习'
