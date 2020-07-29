@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
 }
+apply<GreetPlugin>()
 
 android {
     compileSdkVersion(29)
