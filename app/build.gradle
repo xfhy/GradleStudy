@@ -3,6 +3,7 @@ import transform.MyTransform
 //import com.xfhy.plugin.CustomPlugin
 //import com.xfhy.plugin.MyAndroidPlugin
 //import com.xfhy.plugin.HookAssetsPlugin
+import com.xfhy.plugin.ManifestDemoPlugin
 
 //build.gradle对应的是Project对象,plugins是里面一个方法,设置插件用的
 //在模块的build.gradle中可以通过rootProject获取root build.gradle所对应的对象.
@@ -16,6 +17,7 @@ apply plugin: 'com.android.application'
 //apply plugin: CustomPlugin
 //apply plugin: MyAndroidPlugin
 //apply plugin: HookAssetsPlugin
+apply plugin: ManifestDemoPlugin
 //apply from: 'file.gradle'
 //apply from: 'task.gradle'
 //apply from: 'net.gradle'
@@ -31,7 +33,7 @@ apply plugin: 'com.android.application'
 android {
 
     //在项目中使用Transform
-    registerTransform(new MyTransform())
+    //registerTransform(new MyTransform())
 
     compileSdkVersion Config.compileSdkVersion
     buildToolsVersion Config.buildToolsVersion

@@ -7,6 +7,10 @@ import android.util.Log;
 
 import com.xfhy.test.Test;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -18,5 +22,19 @@ public class MainActivity extends AppCompatActivity {
 
         Test test = new Test();
         Log.d(TAG, "onCreate: " + test.toString());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) new URL("http://www.baidu.com").openConnection();
+                    int responseCode = httpURLConnection.getResponseCode();
+                    Log.d("xfhy", "responseCode = " + responseCode);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 }
