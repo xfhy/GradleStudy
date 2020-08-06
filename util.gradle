@@ -1,0 +1,16 @@
+
+//build.gradle中引入这个类之后,是不能直接调用这个getVersionNameAdvanced()方法的.
+// 因为这个文件会被转化成Script对象,这个方法也是Script对象里面的
+def getVersionNameAdvanced() {
+    //找到这个文件
+    def xmlFile = project.file("src/main/AndroidManifest.xml")
+    def rootManifest = new XmlSlurper().parse(xmlFile)
+    return rootManifest.application['@android:allowBackup']
+}
+
+ext {
+    //必须在这里扩展一些Project,才能在build.gradle中调用这个方法
+    //通过这种方式，我将一些常用的函数放到 utils.gradle  中，然后为加载它的 Project  设置
+    //ext  属性。最后，Project  中就可以调用这种赋值函数了！
+    getVersionNameAdvanced = this.&getVersionNameAdvanced
+}
