@@ -43,19 +43,19 @@ class ParseDebugTask extends DefaultTask {
             return
         }
 
-        //2. 解析xml内容
-        def rootNode = new XmlParser().parseText(file.getText())
+        def fileContent = file.getText()
 
-//        addPermission(rootNode, file)
-        removePermission(rootNode, file)
+
+//        addPermission(file,fileContent)
+        removePermission(file, fileContent)
     }
 
     /**
      * 动态给清单文件添加权限
-     * @param rootNode Node
-     * @param file 清单文件
      */
-    void addPermission(Node rootNode, File file) {
+    void addPermission(File file, String fileContent) {
+        //2. 解析xml内容
+        def rootNode = new XmlParser().parseText(fileContent)
         //3. 添加网络权限  这里得加上xmlns:android
         //<uses-permission android:name="android.permission.INTERNET"/>
         //xmlns:android="http://schemas.android.com/apk/res/android"
@@ -76,7 +76,7 @@ class ParseDebugTask extends DefaultTask {
      * @param rootNode Node
      * @param file 清单文件
      */
-    void removePermission(Node rootNode, File file) {
+    void removePermission(File file, String fileContent) {
         //方案1  这样会把所有权限都移除了,暂时没找到合适的办法
         //def node = new Node(rootNode, "uses-permission"/*,["android:name" : "android.permission.READ_PHONE_STATE"]*/)
         //rootNode.remove(node)
@@ -84,10 +84,10 @@ class ParseDebugTask extends DefaultTask {
         //println(updateXmlContent)
 
         //方案2 读取到xml内容之后,将制定权限的字符串给替换掉,,妙啊 妙啊
-        def manifestContent = file.getText()
-        manifestContent = manifestContent.replace("android.permission.READ_PHONE_STATE","")
-        println(manifestContent)
-        file.write(manifestContent)
+        fileContent = fileContent.replace("android.permission.READ_PHONE_STATE", "")
+        println(fileContent)
+        //将字符串写入文件
+        file.write(fileContent)
     }
 
 }
