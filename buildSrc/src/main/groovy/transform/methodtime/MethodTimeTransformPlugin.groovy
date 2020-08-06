@@ -9,14 +9,12 @@ import org.gradle.api.Project
 class MethodTimeTransformPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
-        /*project.plugins.each { plugin ->
-            println("$plugin ------")
-            if (plugin instanceof BasePlugin) {
-                println("$plugin ------   注册成功")
-                plugin.registerTransform(new MethodTimeTransform(project))
-            }
-        }*/
+        //注册方式1
+        AppExtension appExtension = project.extensions.getByType(AppExtension)
+        appExtension.registerTransform(new MethodTimeTransform(project))
+        //注册之后会在TransformManager#addTransform中生成一个task.
 
+        //注册方式2
         //project.android.registerTransform(new MethodTimeTransform(project))
     }
 }
