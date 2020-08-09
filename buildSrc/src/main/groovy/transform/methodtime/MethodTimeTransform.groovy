@@ -8,15 +8,19 @@ import com.android.build.api.transform.TransformException
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.ide.common.internal.WaitableExecutor
 import org.gradle.api.Project
 import org.apache.commons.io.FileUtils
+
+import java.util.concurrent.Callable
 
 /**
  * 用于统计方法耗时的Transform
  */
 class MethodTimeTransform extends Transform {
 
-    Project mProject
+    private WaitableExecutor mWaitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
+    private Project mProject
 
     //可以让外界把Project传进来
     MethodTimeTransform(Project project) {
@@ -59,6 +63,7 @@ class MethodTimeTransform extends Transform {
         TransformOutputProvider outputProvider = transformInvocation.outputProvider
 
         //当前是否是增量编译,由isIncremental方法决定的
+        // 当上面的isIncremental()写的返回true,这里得到的值不一定是true,还得看当时环境.比如clean之后第一次运行肯定就不是增量编译嘛.
         boolean isIncremental = transformInvocation.isIncremental()
         if (!isIncremental) {
             //不是增量编译则删除之前的所有文件
@@ -70,14 +75,31 @@ class MethodTimeTransform extends Transform {
 
             input.jarInputs.each { jarInput ->
                 //处理jar
-                processJarInput(jarInput, outputProvider, isIncremental)
+                mWaitableExecutor.execute(new Callable<Object>() {
+                    @Override
+                    Object call() throws Exception {
+                        //多线程
+                        processJarInput(jarInput, outputProvider, isIncremental)
+                        return null
+                    }
+                })
             }
 
+            //处理源码文件
             input.directoryInputs.each { directoryInput ->
-                //处理源码文件
-                processDirectoryInput(directoryInput, outputProvider, isIncremental)
+                //多线程
+                mWaitableExecutor.execute(new Callable<Object>() {
+                    @Override
+                    Object call() throws Exception {
+                        processDirectoryInput(directoryInput, outputProvider, isIncremental)
+                        return null
+                    }
+                })
             }
         }
+
+        //等待所有任务结束
+        mWaitableExecutor.waitForTasksWithQuickFail(true)
     }
 
     /**
