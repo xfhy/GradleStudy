@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Test test = new Test();
-        Log.d(TAG, "onCreate: " + test.toString());
+        Log.d(TAG, "onCreat  sse: " + test.toString());
 
         new Thread(new Runnable() {
             @Override
