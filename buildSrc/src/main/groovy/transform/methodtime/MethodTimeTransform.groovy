@@ -1,3 +1,5 @@
+package transform.methodtime
+
 import com.android.build.api.transform.DirectoryInput
 import com.android.build.api.transform.Format
 import com.android.build.api.transform.JarInput
@@ -170,18 +172,45 @@ class MethodTimeTransform extends Transform {
                 }
             }
         } else {
-            transformDirectory(directoryInput.file, dest)
+            transformDirectory(directoryInput, dest)
         }
     }
 
     void transformSingleFile(File inputFile, File destFile) {
         println("拷贝单个文件")
-        FileUtils.copyFile(inputFile, destFile)
+        //FileUtils.copyFile(inputFile, destFile)
+        MethodTraceUtil.traceFile(inputFile, destFile)
     }
 
-    void transformDirectory(File directoryInputFile, File dest) {
-        println("拷贝文件夹 $dest -----")
-        FileUtils.copyDirectory(directoryInputFile, dest)
+    void transformDirectory(DirectoryInput directoryInput, File dest) {
+
+        String[] extensions = ["class"]
+        //递归地去获取该文件夹下面所有的文件
+        Collection<File> fileList = FileUtils.listFiles(directoryInput.file, extensions, true)
+        def outputFilePath = dest.absolutePath
+        def inputFilePath = directoryInput.file.absolutePath
+
+        println("outputFilePath = $outputFilePath     inputFilePath = $inputFilePath")
+        //outputFilePath = E:\Github\GradleStudy\app\build\intermediates\transforms\MethodTimeTransform\free\debug\37
+        //inputFilePath  = E:\Github\GradleStudy\app\build\intermediates\javac\freeDebug\classes
+
+
+        fileList.each { inputFile ->
+            //替换前  GradleStudy\app\build\intermediates\javac\freeDebug\classes\com\xfhy\gradledemo\MainActivity$1.class
+            //替换后  GradleStudy\app\build\intermediates\transforms\MethodTimeTransform\free\debug\37\com\xfhy\gradledemo\MainActivity$1.class
+            println("替换前  file.absolutePath = ${inputFile.absolutePath}")
+            def outputFullPath = inputFile.absolutePath.replace(inputFilePath, outputFilePath)
+            println("替换后  file.absolutePath = ${outputFullPath}")
+            def outputFile = new File(outputFullPath)
+            //创建文件
+            FileUtils.touch(outputFile)
+            //单个单个地复制文件
+//            FileUtils.copyFile(file, outputFile)
+            transformSingleFile(inputFile, outputFile)
+        }
+
+        //如果不处理,则直接复制文件夹给下一个Transform的输入目录就行
+        //FileUtils.copyDirectory(directoryInput.file, dest)
     }
 
     /**
