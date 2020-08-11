@@ -18,7 +18,8 @@ class MethodTraceUtil {
 
             ClassReader classReader = new ClassReader(inputStream)
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
-            classReader.accept(classWriter, 0)
+            TraceClassVisitor adapter = new TraceClassVisitor(classWriter)
+            classReader.accept(adapter, 0)
             outputStream.write(classWriter.toByteArray())
 
             inputStream.close()
