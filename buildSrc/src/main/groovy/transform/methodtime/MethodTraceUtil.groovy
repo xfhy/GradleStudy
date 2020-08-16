@@ -13,13 +13,14 @@ class MethodTraceUtil {
      */
     public static void traceFile(File inputFile, File outputFile) {
         if (isNeedTraceClass(inputFile)) {
+            println("${inputFile.name} ---- 需要注入")
             FileInputStream inputStream = new FileInputStream(inputFile)
             FileOutputStream outputStream = new FileOutputStream(outputFile)
 
             ClassReader classReader = new ClassReader(inputStream)
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
-            TraceClassVisitor adapter = new TraceClassVisitor(classWriter)
-            classReader.accept(adapter, 0)
+            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
+            TraceClassVisitor classVisitor = new TraceClassVisitor(classWriter)
+            classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
             outputStream.write(classWriter.toByteArray())
 
             inputStream.close()

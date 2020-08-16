@@ -1,11 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
     google()
     jcenter()
-}
-apply {
-    plugin 'groovy'
-    plugin 'java-gradle-plugin'
 }
 dependencies {
     implementation gradleApi()
@@ -16,7 +15,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.6.2'
     implementation 'com.android.tools.build:gradle-api:3.6.2'
     //ASM
-    implementation 'org.ow2.asm:asm:7.0'
-    implementation 'org.ow2.asm:asm-util:7.0'
-    implementation 'org.ow2.asm:asm-commons:7.0'
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
 }

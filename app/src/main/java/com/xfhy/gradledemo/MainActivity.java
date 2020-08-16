@@ -1,6 +1,7 @@
 package com.xfhy.gradledemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import transform.methodtime.MethodTrack;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    @MethodTrack
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        com.xfhy.gradledemo.Test test1 = new com.xfhy.gradledemo.Test();
+        test1.add();
+        test1.delete();
 
     }
 }

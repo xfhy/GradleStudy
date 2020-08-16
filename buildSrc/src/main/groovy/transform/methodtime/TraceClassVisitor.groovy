@@ -1,6 +1,6 @@
 package transform.methodtime
 
-import groovyjarjarasm.asm.Type
+import org.objectweb.asm.Type
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.ClassVisitor
@@ -45,7 +45,7 @@ class TraceClassVisitor extends ClassVisitor {
         private boolean traceCurrentMethod
         //标记 当前类的所有方法都需要计算耗时?
         private boolean traceClassAllMethod
-        private long timeLocalIndex
+        private int timeLocalIndex
 
         TraceMethodVisitor(int api, MethodVisitor methodVisitor, int access, String name, String descriptor, String className, boolean
                 traceClass) {
@@ -72,9 +72,39 @@ class TraceClassVisitor extends ClassVisitor {
             if (traceClassAllMethod || traceCurrentMethod) {
                 //构造一个局部变量
                 timeLocalIndex = newLocal(Type.LONG_TYPE)
-
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
+                mv.visitVarInsn(LSTORE, timeLocalIndex)
             }
         }
+
+        //方法结束
+        @Override
+        protected void onMethodExit(int opcode) {
+            super.onMethodExit(opcode)
+            if (traceClassAllMethod || traceCurrentMethod) {
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
+                mv.visitVarInsn(LLOAD, timeLocalIndex)
+                mv.visitInsn(LSUB)
+                mv.visitVarInsn(LSTORE, timeLocalIndex)
+
+                mv.visitLdcInsn(className)
+                mv.visitTypeInsn(NEW, "java/lang/StringBuilder")
+                mv.visitInsn(DUP)
+                mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
+                mv.visitLdcInsn("⇢ ")
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false)
+                mv.visitLdcInsn(methodName + methodDesc + ": ")
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false)
+                mv.visitVarInsn(LLOAD, timeLocalIndex)
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false)
+                mv.visitLdcInsn("ms")
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false)
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
+                mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+                mv.visitInsn(POP)
+            }
+        }
+
     }
 
 }
