@@ -1,5 +1,7 @@
 package com.xfhy.gradledemo;
 
+import android.util.Log;
+
 import transform.methodtime.MethodTrack;
 
 /**
@@ -10,7 +12,7 @@ import transform.methodtime.MethodTrack;
 @MethodTrack
 public class Test {
 
-    public void delete() {
+    /*public void delete() {
         int result = 0;
         for (int i = 0; i < 100000; i++) {
             result -= i;
@@ -25,5 +27,15 @@ public class Test {
             result += i;
         }
         System.out.println(result);
+    }*/
+
+    public void delete2() {
+        long currentTimeMillis = System.currentTimeMillis();
+
+        System.out.println("xfhy");
+
+        long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
+        Log.d("Test", "⇢ " + "delete()V: " + currentTimeMillis2 + "ms");
     }
+
 }

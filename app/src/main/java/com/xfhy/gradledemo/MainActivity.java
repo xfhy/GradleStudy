@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
         com.xfhy.gradledemo.Test test1 = new com.xfhy.gradledemo.Test();
-        test1.add();
-        test1.delete();
+        /*test1.add();
+        test1.delete();*/
 
     }
 }
