@@ -1,5 +1,6 @@
 import transform.MyTransform
 import transform.methodtime.MethodTimeTransformPlugin
+import transform.life.LifeTransformPlugin
 
 //import com.xfhy.plugin.CustomPlugin
 //import com.xfhy.plugin.MyAndroidPlugin
@@ -19,7 +20,8 @@ apply plugin: 'com.android.application'
 //apply plugin: MyAndroidPlugin
 //apply plugin: HookAssetsPlugin
 //apply plugin: ManifestDemoPlugin
-apply plugin: MethodTimeTransformPlugin
+//apply plugin: MethodTimeTransformPlugin
+apply plugin: LifeTransformPlugin
 //apply from: 'file.gradle'
 //apply from: 'task.gradle'
 //apply from: 'net.gradle'
