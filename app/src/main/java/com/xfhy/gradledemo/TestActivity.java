@@ -15,8 +15,7 @@ public class TestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //Log.d("TestActivity", "-------> onCreate : " + this.getClass().getSimpleName());
+        Log.d("TestActivity", "-------> onCreate : " + this.getClass().getSimpleName());
         super.onCreate(savedInstanceState);
-        System.out.println("xfhy");
     }
 }

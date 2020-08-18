@@ -40,14 +40,19 @@ class LifeClassVisitor extends ClassVisitor {
     @Override
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         def methodVisitor = cv.visitMethod(access, name, descriptor, signature, exceptions)
-        return new TraceMethodVisitor(api, methodVisitor, access, name, descriptor, className, traceClass)
+        //println("methodName = $name")
+        if ("onCreate" == name) {
+            //只有onCreate需要插桩
+            return new TraceMethodVisitor(api, methodVisitor, access, name, descriptor, className, traceClass)
+        } else {
+            return methodVisitor
+        }
     }
 
     class TraceMethodVisitor extends AdviceAdapter {
 
         private String className
         private String methodName
-        private int timeLocalIndex
         private boolean traceClass
 
         TraceMethodVisitor(int api, MethodVisitor methodVisitor, int access, String name, String descriptor, String className, boolean
@@ -58,8 +63,6 @@ class LifeClassVisitor extends ClassVisitor {
             this.methodName = name
             this.traceClass = traceClass
         }
-
-        //todo xfhy 未完成 现在是每个方法都打印了log,,,需要在onCreate里面打
 
         //方法进入
         @Override
@@ -80,32 +83,60 @@ class LifeClassVisitor extends ClassVisitor {
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
             mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false);
-            //mv.visitInsn(POP)
-        }
-
-        //方法结束
-        @Override
-        protected void onMethodExit(int opcode) {
-            super.onMethodExit(opcode)
-            if (!traceClass) {
-                return
-            }
+            mv.visitInsn(POP)
         }
 
         /*
         利用ASM Bytecode outline 插件生成的ASM代码如下(其中Label部分可以忽略):
         {
-
+            mv = cw.visitMethod(ACC_PROTECTED, "onCreate", "(Landroid/os/Bundle;)V", null, null);
+            {
+                av0 = mv.visitParameterAnnotation(0, "Landroidx/annotation/Nullable;", false);
+                av0.visitEnd();
+            }
+            mv.visitCode();
+            Label l0 = new Label();
+            mv.visitLabel(l0);
+            mv.visitLineNumber(18, l0);
+            mv.visitLdcInsn("TestActivity");
+            mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
+            mv.visitLdcInsn("-------> onCreate : ");
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;", false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Class", "getSimpleName", "()Ljava/lang/String;", false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+            mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false);
+            mv.visitInsn(POP);
+            Label l1 = new Label();
+            mv.visitLabel(l1);
+            mv.visitLineNumber(19, l1);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitVarInsn(ALOAD, 1);
+            mv.visitMethodInsn(INVOKESPECIAL, "androidx/appcompat/app/AppCompatActivity", "onCreate", "(Landroid/os/Bundle;)V", false);
+            Label l2 = new Label();
+            mv.visitLabel(l2);
+            mv.visitLineNumber(20, l2);
+            mv.visitInsn(RETURN);
+            Label l3 = new Label();
+            mv.visitLabel(l3);
+            mv.visitLocalVariable("this", "Lcom/xfhy/gradledemo/TestActivity;", null, l0, l3, 0);
+            mv.visitLocalVariable("savedInstanceState", "Landroid/os/Bundle;", null, l0, l3, 1);
+            mv.visitMaxs(3, 2);
+            mv.visitEnd();
         }
          */
 
         /*
         插入之后的代码如下:
-         public void delete() {
-            long currentTimeMillis = System.currentTimeMillis();
-            ......
-            long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
-            Log.d("Test", "⇢ " + "delete()V: " + currentTimeMillis2 + "ms");
+         public void onCreate(Bundle savedInstanceState) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("-------> onCreate : ");
+            sb.append(getClass().getSimpleName());
+            Log.d("TestActivity", sb.toString());
         }
          */
 

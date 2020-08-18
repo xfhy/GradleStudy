@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Test test = new Test();
-        Log.d(TAG, "onCreat  sse: " + test.toString());
+        //Test test = new Test();
+        //Log.d(TAG, "onCreate  sse: " + test.toString());
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
 
-        com.xfhy.gradledemo.Test test1 = new com.xfhy.gradledemo.Test();
+        //com.xfhy.gradledemo.Test test1 = new com.xfhy.gradledemo.Test();
         /*test1.add();
         test1.delete();*/
 
