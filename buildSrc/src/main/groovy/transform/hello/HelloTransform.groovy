@@ -1,10 +1,10 @@
-package transform.life
+package transform.hello
 
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 import transform.base.BaseTransform
 
-class LifeTransform extends BaseTransform {
+class HelloTransform extends BaseTransform {
 
     @Override
     String getName() {
@@ -13,7 +13,7 @@ class LifeTransform extends BaseTransform {
 
     @Override
     ClassVisitor getClassVisitor(ClassWriter classWriter) {
-        return new LifeClassVisitor(classWriter)
+        return new HelloClassVisitor(classWriter)
     }
 
     @Override

@@ -23,11 +23,6 @@ abstract class BaseTransform extends Transform {
     protected WaitableExecutor mWaitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
 
     @Override
-    String getName() {
-        return "MethodTimeTransform"
-    }
-
-    @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
         //需要处理的数据类型,这里表示class文件
         return TransformManager.CONTENT_CLASS
