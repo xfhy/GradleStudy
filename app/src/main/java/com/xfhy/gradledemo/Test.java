@@ -29,13 +29,17 @@ public class Test {
         System.out.println(result);
     }*/
 
-    public void delete2() {
+    /*public void delete2() {
         long currentTimeMillis = System.currentTimeMillis();
 
         System.out.println("xfhy");
 
         long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
         Log.d("Test", "⇢ " + "delete()V: " + currentTimeMillis2 + "ms");
+    }*/
+
+    public void hello() {
+        System.out.println("Hello World!");
     }
 
 }
