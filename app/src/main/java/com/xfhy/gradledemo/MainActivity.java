@@ -5,6 +5,7 @@ import transform.methodtime.MethodTrack;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.xfhy.test.Test;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
@@ -42,5 +43,17 @@ public class MainActivity extends AppCompatActivity {
         /*test1.add();
         test1.delete();*/
 
+        findViewById(R.id.btn_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("xfhy666", "onClick: 按钮1");
+            }
+        });
+        findViewById(R.id.btn_second).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.w("xfhy666", "onClick: 按钮2");
     }
 }

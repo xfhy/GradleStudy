@@ -2,11 +2,12 @@ import transform.MyTransform
 import transform.methodtime.MethodTimeTransformPlugin
 import transform.life.LifeTransformPlugin
 import transform.hello.HelloTransformPlugin
+import transform.fastclick.FastClickTransformPlugin
 
 //import com.xfhy.plugin.CustomPlugin
 //import com.xfhy.plugin.MyAndroidPlugin
 //import com.xfhy.plugin.HookAssetsPlugin
-import com.xfhy.plugin.ManifestDemoPlugin
+//import com.xfhy.plugin.ManifestDemoPlugin
 
 //build.gradle对应的是Project对象,plugins是里面一个方法,设置插件用的
 //在模块的build.gradle中可以通过rootProject获取root build.gradle所对应的对象.
@@ -23,7 +24,7 @@ apply plugin: 'com.android.application'
 //apply plugin: ManifestDemoPlugin
 //apply plugin: MethodTimeTransformPlugin
 //apply plugin: LifeTransformPlugin
-apply plugin: HelloTransformPlugin
+apply plugin: FastClickTransformPlugin
 //apply from: 'file.gradle'
 //apply from: 'task.gradle'
 //apply from: 'net.gradle'

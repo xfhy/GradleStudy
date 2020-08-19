@@ -1,6 +1,7 @@
 package com.xfhy.gradledemo;
 
-import android.util.Log;
+import android.content.Context;
+import android.text.TextUtils;
 
 import transform.methodtime.MethodTrack;
 
@@ -38,8 +39,14 @@ public class Test {
         Log.d("Test", "⇢ " + "delete()V: " + currentTimeMillis2 + "ms");
     }*/
 
-    public void hello() {
-        System.out.println("Hello World!");
+    public void hello(String name) {
+        /*if (FastClickUtil.isFastDoubleClick()) {
+            return;
+        }*/
+        if(TextUtils.isEmpty(name)){
+            return;
+        }
+        System.out.println("hello");
     }
 
 }
